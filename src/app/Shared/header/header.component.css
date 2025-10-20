@@ -1,0 +1,38 @@
+/* Container */
+.top-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
+  background: #fff;  
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Right side layout */
+.right-pane {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Button-like items */
+.home-icon,
+.drop-downs,
+.account {
+  padding: 6px 14px;
+  border-radius: 8px;         /* rounded buttons */
+  cursor: pointer;
+  font-weight: 500;
+  color: #111;
+  transition: background-color .2s ease, color .2s ease;
+  font-weight: 700;
+}
+
+/* Hover = green fill */
+.home-icon:hover,
+.drop-downs:hover,
+.account:hover {
+  background-color: var(--olive-dark);  /* green */
+  color: #fff;
+}
+

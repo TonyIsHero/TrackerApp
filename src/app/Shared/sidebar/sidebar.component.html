@@ -1,0 +1,44 @@
+<div class="navbar">
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    TrackerApp
+  </div>
+
+  <!-- Toggle Section -->
+  <div class="toggle-section">
+    <button
+      class="toggle-btn"
+      [ngClass]="{ active: activeTab === 'expense' }"
+      (click)="navigate('expense')"
+    >
+      Expenses
+    </button>
+
+    <button
+      class="toggle-btn"
+      [ngClass]="{ active: activeTab === 'fitness' }"
+      (click)="navigate('fitness')"
+    >
+      Fitness
+    </button>
+  </div>
+
+  <!-- Dynamic Content Section -->
+  <div class="macros-section">
+    <!-- Fitness Content -->
+    <ng-container *ngIf="activeTab === 'fitness'">
+      <div class="macro-item">Your Day</div>
+      <div class="macro-item">Protein</div>
+      <div class="macro-item">Carbohydrates</div>
+      <div class="macro-item">Fats</div>
+    </ng-container>
+
+    <!-- Expenses Content -->
+    <ng-container *ngIf="activeTab === 'expense'">
+      <div class="macro-item">Overview</div>
+      <div class="macro-item">Spending Categories</div>
+      <div class="macro-item">Income</div>
+      <div class="macro-item">Savings</div>
+    </ng-container>
+  </div>
+</div>

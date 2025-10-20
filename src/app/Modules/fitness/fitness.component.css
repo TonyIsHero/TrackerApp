@@ -1,0 +1,77 @@
+/* Whole content area (beside sidebar) */
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 2 rem;
+  background-color: #f9faf8; /* subtle off-white */
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Hi User section */
+.welcome-section {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2b3a28; /* dark olive tone */
+  margin-bottom: 1.2rem;
+}
+
+/* Chart + Macros grid */
+.chart-macros {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.8rem;
+}
+
+/* Chart (large box) */
+.chart-section {
+  flex: 2;
+  background-color: #1f637d; /* placeholder blue */
+  border-radius: 25px;
+  padding: 1rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Macros (smaller box) */
+.macros-section {
+  flex: 1;
+  background-color: #1f637d;
+  border-radius: 25px;
+  padding: 1rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Meal Adder (input area) */
+.meal-adder-section {
+  background-color: #ffffff;
+  border: 1.5px solid #d0d7cd;
+  border-radius: 20px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #2b3a28;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+}
+
+/* Meals list */
+.meals-section {
+  background-color: #ffffff;
+  border: 1.5px solid #d0d7cd;
+  border-radius: 20px;
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2b3a28;
+}

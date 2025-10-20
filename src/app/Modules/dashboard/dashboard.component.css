@@ -1,0 +1,19 @@
+.display-area{
+    display: flex;
+    flex-direction: row;
+     background-color: var(--off-white);
+    height: 92vh;
+}
+.footer-and-body {     
+  width: 83%;   
+  display: flex;
+  flex-direction: column;
+}
+.expense-fitness-area {
+  flex: 1; /* fills remaining space */
+  overflow-y: auto;
+}
+
+.side-nav{
+    width: 17%;
+}

@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --olive-dark: #5a6b45;
+  --olive-mid: #8da67e;
+  --olive-light: #c7d4b4;
+  --off-white: #f8faf7;
+  --white: #ffffff;
+}
+/* Global font for the entire Angular app */
+* {
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  box-sizing: border-box;
+}
