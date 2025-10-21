@@ -10,6 +10,7 @@
   flex-direction: column;
 }
 .expense-fitness-area {
+  padding: 2rem;
   flex: 1; /* fills remaining space */
   overflow-y: auto;
 }

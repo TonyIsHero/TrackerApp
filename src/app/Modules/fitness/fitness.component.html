@@ -1,9 +1,112 @@
 <div class="content">
-    <div class="welcome-section">Hi Sabarno</div>
-    <div class="chart-macros">
-        <div class="chart-section">Pie Chart</div>
-        <div class="macros-section"> Macros</div>
+    <div class="welcome-section">Today's Meal Logs</div>
+    <div *ngIf="!anyMealAdded; else mealAdded" class="greeting">
+        <div class="messages">
+            <p>{{this.greetingMessage}}</p>
+            <p>{{this.messageLine}}</p>
+        </div>
+        <div class="clock">
+            <p>{{this.currentTime}}</p>
+        </div>
     </div>
-    <div class="meal-adder-section">Meals Adder</div>
-    <div class="meals-section">Meals to be displayed</div>
+    <ng-template #mealAdded>
+    <div class="chart-macros">
+        <div class="chart-section">
+            <highcharts-chart
+            [options]="dayoverviewchart">
+        </highcharts-chart>
+        </div>
+        <div class="macros-section"> 
+            <div class="nutrients">
+                <div *ngFor="let item of macrosData" class="macro-name">
+                    <div class="macro-name">{{item.name}}</div>
+                </div>
+            </div>
+            <div class="nutrient-value">
+                <div *ngFor="let item of macrosData" class="macro-value">
+                    <div class="macro-name">{{item.value}}g</div>
+                </div>
+            </div>
+             <div class="macro-chart">
+                
+                <highcharts-chart
+                    [options]="totalcalorieschart">
+                </highcharts-chart>
+                    
+            </div>
+        </div>
+    </div>
+    </ng-template>
+    <div class="meal-adder-section">
+        <div class="meal-adder-header">
+            Add a Meal
+            <div class="toggle-options">
+                <button
+                type="button"
+                class="toggle-button"
+                [class.active]="!aiMode"
+                (click)="toggleMealInputMode('manual')">
+                Manual Entry
+                </button>
+                <button
+                type="button"
+                class="toggle-button"
+                [class.active]="aiMode"
+                (click)="toggleMealInputMode('ai')">
+                Use TrackerAI
+                </button>
+            </div>
+        </div>
+        <div *ngIf="!aiMode; else aiComingSoon">
+        <form [formGroup]="mealForm" (ngSubmit)="onSubmitMealForm()" class="mealForm">
+            <div class="form-row">
+                <div class="form-field">
+                    <label for="carbs">Carbohydrates (g)</label>
+                    <input id="carbs" formControlName="carbs" type="number" required />
+                </div>
+                <div class="form-field">
+                    <label for="proteins">Proteins (g):</label>
+                    <input id="carbs" formControlName="proteins" type="number" required />
+                </div>
+                <div class="form-field">
+                    <label for="fats">Fats (g):</label>
+                    <input id="fats" formControlName="fats" type="number" required />
+                </div>
+                    <div class="form-field">
+                        <label for="fibre">Fibre (g)</label>
+                        <input id="fibre" type="number" formControlName="fibre" required/>
+                    </div>
+                <div class="form-field">
+                    <label for="calories">Calories:</label>
+                    <input id="calories" formControlName="calories" type="number" required />
+                </div>    
+            </div>
+            <div class="form-actions">
+            <button type="submit" [disabled]="mealForm.invalid">Add Meal</button>
+            </div>
+        </form>
+    </div>
+    <ng-template #aiComingSoon>
+    <div class="ai-coming-soon">
+      <p>🤖 The AI meal recognition feature is <strong>coming soon!</strong></p>
+    </div>
+  </ng-template>
+    </div>
+    <div *ngIf="anyMealAdded" class="meals-section">
+        <div class="meals-today-header"> 
+            Your Macros for Today
+        </div>
+        <div class="macro-details">
+            <div class="macro-name">
+                <div *ngFor="let item of macrosData" class="macro-name">
+                    <div class="macro-name">{{item.name}}</div>
+                </div>
+            </div>
+            <div class="macro-value">
+                <div *ngFor="let item of macrosData" class="macro-value">
+                    <div class="macro-name">{{item.value}}g</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

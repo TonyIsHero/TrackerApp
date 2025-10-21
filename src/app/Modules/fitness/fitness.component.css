@@ -3,10 +3,8 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 2 rem;
   background-color: #f9faf8; /* subtle off-white */
   font-family: "Poppins", "Segoe UI", sans-serif;
-  height: 100vh;
   overflow-y: auto;
 }
 
@@ -17,18 +15,24 @@
   color: #2b3a28; /* dark olive tone */
   margin-bottom: 1.2rem;
 }
-
+.greeting{
+  display: flex;
+  font-size: 2rem;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 360px;
+}
 /* Chart + Macros grid */
 .chart-macros {
   display: flex;
   gap: 2rem;
   margin-bottom: 1.8rem;
+ height:360px
 }
 
 /* Chart (large box) */
 .chart-section {
   flex: 2;
-  background-color: #1f637d; /* placeholder blue */
   border-radius: 25px;
   padding: 1rem;
   color: white;
@@ -36,11 +40,25 @@
   align-items: center;
   justify-content: center;
 }
+.macros-section{
+  flex-direction:row;
+  display: flex;
+  flex:1;
+  gap: 3rem;
+  justify-content: space-between;
+  height: 300px;
+}
+
+ag-charts{
+  display: block;
+  width: 100%;
+  height: 300px;
+}
 
 /* Macros (smaller box) */
 .macros-section {
   flex: 1;
-  background-color: #1f637d;
+  background-color:  var(--olive-dark);
   border-radius: 25px;
   padding: 1rem;
   color: white;
@@ -51,18 +69,94 @@
 
 /* Meal Adder (input area) */
 .meal-adder-section {
-  background-color: #ffffff;
+  background-color: var(--olive-light);
   border: 1.5px solid #d0d7cd;
   border-radius: 20px;
   padding: 1rem 1.5rem;
   margin-bottom: 1.5rem;
   color: #2b3a28;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+}
+.meal-adder-header{
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: row; 
   justify-content: space-between;
-  height: 80px;
+}
+.toggle-options{
+  display: flex;
+}
+.toggle-button{
+    background-color: #e0e5e0;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+.toggle-button.active{
+    background-color: var(--olive-dark);
+  color: white;
+}
+.toggle-button:hover{
+    background-color: var(--olive-dark);
+  color: white;
+}
+.form-row{
+    display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.form-field{
+    flex: 1 1 calc(20% - 1rem);
+  display: flex;
+  flex-direction: column;
+}
+.form-field label{
+    margin-bottom:6px;
+  font-weight: 500;
 }
 
+.form-field input{
+    padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+  max-width: 80%;
+}
+.form-field input:focus{
+    border-color: var(--olive-dark);
+}
+.form-actions{
+    margin-top: 1rem;
+}
+
+button[type="submit"]{
+    background-color: var(--olive-dark);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover{
+    background-color: var(--olive-dark);
+}
+
+button[type="submit"]:disabled{
+    background-color: #a5ad9c;
+  cursor: not-allowed;
+}
 /* Meals list */
 .meals-section {
   background-color: #ffffff;
@@ -71,7 +165,12 @@
   padding: 1.5rem;
   flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   color: #2b3a28;
+}
+.macro-details{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 1rem;
 }
