@@ -13,7 +13,7 @@
     <div class="chart-macros">
         <div class="chart-section">
             <highcharts-chart
-            [options]="dayoverviewchart">
+            [options]="chartOptionsDO">
         </highcharts-chart>
         </div>
         <div class="macros-section"> 
@@ -30,7 +30,7 @@
              <div class="macro-chart">
                 
                 <highcharts-chart
-                    [options]="totalcalorieschart">
+                    [options]="chartOptionsTC">
                 </highcharts-chart>
                     
             </div>
@@ -60,6 +60,10 @@
         <div *ngIf="!aiMode; else aiComingSoon">
         <form [formGroup]="mealForm" (ngSubmit)="onSubmitMealForm()" class="mealForm">
             <div class="form-row">
+                <div class="form-field">
+                    <label for="carbs">Meal Name</label>
+                    <input id="carbs" formControlName="mealname" type="text" required />
+                </div>
                 <div class="form-field">
                     <label for="carbs">Carbohydrates (g)</label>
                     <input id="carbs" formControlName="carbs" type="number" required />

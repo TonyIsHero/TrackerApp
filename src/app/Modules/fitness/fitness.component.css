@@ -129,7 +129,7 @@ ag-charts{
   font-size: 1rem;
   outline: none;
   transition: border-color 0.3s ease;
-  max-width: 80%;
+  max-width: 200px;
 }
 .form-field input:focus{
     border-color: var(--olive-dark);

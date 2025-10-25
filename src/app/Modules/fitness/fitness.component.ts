@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import  HighchartsChartModule, { HighchartsChartComponent }  from 'highcharts-angular';
 import Highcharts from 'highcharts';
 import { text } from 'stream/consumers';
+import { SharedserviceService } from '../../Shared/services/sharedservice.service';
 
 @Component({
   selector: 'app-fitness',
@@ -16,6 +17,8 @@ import { text } from 'stream/consumers';
 })
  export class FitnessComponent implements OnInit {
 
+  chartOptionsDO: Highcharts.Options = {};
+  chartOptionsTC: Highcharts.Options = {};
   Highcharts: typeof Highcharts = Highcharts;
   greetingMessage='';
   messageLine='';
@@ -29,24 +32,32 @@ import { text } from 'stream/consumers';
   totalCalories: number = 0;
 
   ngOnInit(): void {
-    this.checkMealAdded();
+
+    this.mealForm = this.fb.group({mealname:[null],carbs:[null], proteins:[null], fats:[null], fibre:[null], calories:[null]});
     this.checkTimeBasedGreeting();
+
+    //mealdata from shared service
+    this.sharedService.mealData$.subscribe(data => {
+      if(data){
+        console.log('Received meal data from Shared Service:', data);
+        this.macrosData = [
+          { name: 'Carbohydrates', value: data.carbs },
+          { name: 'Proteins', value: data.proteins },
+          { name: 'Fats', value: data.fats },];
+        this.totalCalories = data.calories;
+        console.log('Updated Macros Data:', this.macrosData);
+        this.updateChartTC();
+        this.updateChartDO();
+      }
+    });
+    this.checkMealAdded();
     if(isPlatformBrowser(this.platformId)){
       this.updateClock();
-    this.timeInterval = setInterval(() => this.updateClock(), 1000);
+      this.timeInterval = setInterval(() => this.updateClock(), 1000);
     }
   }
 
-  constructor(private fb: FormBuilder, @Inject(PLATFORM_ID) private platformId: Object)
-  {
-  this.mealForm = this.fb.group({
-    carbs: [null,[Validators.required, Validators.min(0)]],
-    proteins: [null,[Validators.required, Validators.min(0)]],
-    fats: [null,[Validators.required, Validators.min(0)]],
-    fibre: [null,[Validators.required, Validators.min(0)]],
-    calories: [null,[Validators.required, Validators.min(0)]]
-  });
-  }
+  constructor(private fb: FormBuilder, @Inject(PLATFORM_ID) private platformId: Object, private sharedService: SharedserviceService ){}
 
   updateClock() {
     const now = new Date();
@@ -76,6 +87,81 @@ import { text } from 'stream/consumers';
       this.aiMode = (mode === 'ai');
     }
 
+  updateChartDO(){
+    this.chartOptionsDO={
+    chart: {
+      type: 'pie',
+      backgroundColor: 'transparent',
+      height: 350,
+      width: 550,
+    },
+    title:{
+      text: 'Macronutrient Distribution',
+      align: 'left',
+      verticalAlign: 'bottom',
+      style: { color: '#5a6b45', fontSize: '18px',fontWeight: 'bold' },
+    },
+    plotOptions: {
+      pie: {
+        innerSize: '0%',
+        dataLabels: { enabled: true, format: '{point.name}' ,
+        style: { color: '#f8faf7', fontSize: '14px',},   
+      },
+      
+    borderWidth: 0,
+    },
+  },
+    series: [
+      {  
+      type: 'pie',
+      name: 'Macronutrients',
+      data: this.macrosData.map(item => ({ 
+        name: item.name, 
+        y: item.value,
+        color: item.name === 'Carbohydrates' ? '#8da67e' :
+               item.name === 'Proteins' ? '#5a6b45' :
+               item.name === 'Fats' ? '#F5F5DC' : '#8085e9',
+       })),
+    },],
+    tooltip: {pointFormat: '{point.name}: <b>{point.y}</b>'},
+    legend: {enabled: true,
+      itemStyle: { color: '#f8faf7', fontSize: '14px',},
+    },
+    credits: {enabled: false},
+  };
+  }
+  updateChartTC(){
+    this.chartOptionsTC={
+    chart: {
+      type: 'pie',
+      backgroundColor: 'transparent',
+      height: 200,
+      width: 200,
+    },  
+    title: {
+      text: `${this.totalCalories} kcal`,
+      align: 'center',
+      verticalAlign: 'middle',
+      style: { color: '#f8faf7', fontSize: '14px',fontWeight: 'bold' },
+    },
+    plotOptions: {
+      pie: {
+        innerSize: '0%',
+        dataLabels: { enabled: false },
+        borderWidth: 0,
+      },
+    },
+    series: [{
+      type: 'pie',
+      data:[
+        { name: 'Calories', y: 1, color: '#c7d4b4' },
+      ],
+      },],
+    tooltip: {enabled: false},
+    legend: {enabled: false},
+    credits: {enabled: false},
+  };
+  }
   onSubmitMealForm(){
     if(this.mealForm.valid){
       const mealData = this.mealForm.value;
@@ -86,32 +172,36 @@ import { text } from 'stream/consumers';
         { name: 'Fats', value: mealData.fats },];
       this.totalCalories = mealData.calories;
       
-      this.totalcalorieschart = {
-        ...this.totalcalorieschart,
-        title: {
-          text: `${this.totalCalories} kcal`,
-          align: 'center',
-          verticalAlign: 'middle',
-          y: 6,
-          style: { color: '#f8faf7', fontSize: '18px',fontWeight: 'bold' },
-        },
-      };
+      this.sharedService.updateMealData(mealData);
+      
+      this.updateChartTC();
+      this.updateChartDO();
+      // this.totalcalorieschart = {
+      //   ...this.totalcalorieschart,
+      //   title: {
+      //     text: `${this.totalCalories} kcal`,
+      //     align: 'center',
+      //     verticalAlign: 'middle',
+      //     y: 6,
+      //     style: { color: '#f8faf7', fontSize: '18px',fontWeight: 'bold' },
+      //   },
+      // };
 
-      this.dayoverviewchart = {
-        ...this.dayoverviewchart,
-        series: [
-      {  
-      type: 'pie',
-      name: 'Macronutrients',
-      data: this.macrosData.map(item => ({ 
-        name: item.name, 
-        y: item.value,
-        color: item.name === 'Carbohydrates' ? '#8da67e' :
-               item.name === 'Proteins' ? '#5a6b45' :
-               item.name === 'Fats' ? '#AC9362' : '#8085e9',
-       })),
-    },],
-      };
+    //   this.dayoverviewchart = {
+    //     ...this.dayoverviewchart,
+    //     series: [
+    //   {  
+    //   type: 'pie',
+    //   name: 'Macronutrients',
+    //   data: this.macrosData.map(item => ({ 
+    //     name: item.name, 
+    //     y: item.value,
+    //     color: item.name === 'Carbohydrates' ? '#8da67e' :
+    //            item.name === 'Proteins' ? '#5a6b45' :
+    //            item.name === 'Fats' ? '#AC9362' : '#8085e9',
+    //    })),
+    // },],
+    //   };
       // Further processing can be done here  
       this.mealForm.reset();
       this.checkMealAdded();
