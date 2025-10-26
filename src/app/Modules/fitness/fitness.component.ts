@@ -176,32 +176,6 @@ import { SharedserviceService } from '../../Shared/services/sharedservice.servic
       
       this.updateChartTC();
       this.updateChartDO();
-      // this.totalcalorieschart = {
-      //   ...this.totalcalorieschart,
-      //   title: {
-      //     text: `${this.totalCalories} kcal`,
-      //     align: 'center',
-      //     verticalAlign: 'middle',
-      //     y: 6,
-      //     style: { color: '#f8faf7', fontSize: '18px',fontWeight: 'bold' },
-      //   },
-      // };
-
-    //   this.dayoverviewchart = {
-    //     ...this.dayoverviewchart,
-    //     series: [
-    //   {  
-    //   type: 'pie',
-    //   name: 'Macronutrients',
-    //   data: this.macrosData.map(item => ({ 
-    //     name: item.name, 
-    //     y: item.value,
-    //     color: item.name === 'Carbohydrates' ? '#8da67e' :
-    //            item.name === 'Proteins' ? '#5a6b45' :
-    //            item.name === 'Fats' ? '#AC9362' : '#8085e9',
-    //    })),
-    // },],
-    //   };
       // Further processing can be done here  
       this.mealForm.reset();
       this.checkMealAdded();
@@ -210,81 +184,5 @@ import { SharedserviceService } from '../../Shared/services/sharedservice.servic
       this.mealForm.markAllAsTouched();
    }
   }
-  
-  // Chart Sections  
-  dayoverviewchart: Highcharts.Options={
-    chart: {
-      type: 'pie',
-      backgroundColor: 'transparent',
-      height: 350,
-      width: 550,
-    },
-    title:{
-      text: 'Macronutrient Distribution',
-      align: 'left',
-      verticalAlign: 'bottom',
-      style: { color: '#5a6b45', fontSize: '18px',fontWeight: 'bold' },
-    },
-    plotOptions: {
-      pie: {
-        innerSize: '0%',
-        dataLabels: { enabled: true, format: '{point.name}' ,
-        style: { color: '#f8faf7', fontSize: '14px',},   
-      },
-      
-    borderWidth: 0,
-    },
-  },
-    series: [
-      {  
-      type: 'pie',
-      name: 'Macronutrients',
-      data: this.macrosData.map(item => ({ 
-        name: item.name, 
-        y: item.value,
-        color: item.name === 'Carbohydrates' ? '#8da67e' :
-               item.name === 'Proteins' ? '#5a6b45' :
-               item.name === 'Fats' ? '#F5F5DC' : '#8085e9',
-       })),
-    },],
-    tooltip: {pointFormat: '{point.name}: <b>{point.y}</b>'},
-    legend: {enabled: true,
-      itemStyle: { color: '#f8faf7', fontSize: '14px',},
-    },
-    credits: {enabled: false},
-  };
-    
-  // total calories consumed pie chart
-
-  totalcalorieschart: Highcharts.Options={
-    chart: {
-      type: 'pie',
-      backgroundColor: 'transparent',
-      height: 200,
-      width: 200,
-    },  
-    title: {
-      text: `${this.totalCalories} kcal`,
-      align: 'center',
-      verticalAlign: 'middle',
-      style: { color: '#f8faf7', fontSize: '14px',fontWeight: 'bold' },
-    },
-    plotOptions: {
-      pie: {
-        innerSize: '0%',
-        dataLabels: { enabled: false },
-        borderWidth: 0,
-      },
-    },
-    series: [{
-      type: 'pie',
-      data:[
-        { name: 'Calories', y: 1, color: '#c7d4b4' },
-      ],
-      },],
-    tooltip: {enabled: false},
-    legend: {enabled: false},
-    credits: {enabled: false},
-  };
   
 }
