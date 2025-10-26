@@ -1,0 +1,95 @@
+/* ===== Overall Layout ===== */
+.main-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(145deg, #f8faf7 60%, #e6ecdf);
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+/* ===== Title Section ===== */
+.title-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #2b3a28;
+}
+
+.icon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 0.6rem;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+.app-name {
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.app-name span {
+  font-weight: 600;
+  color: #3e5c3b;
+}
+
+/* ===== Login/Register Card ===== */
+.login-register {
+  background-color: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(43, 58, 40, 0.1);
+  width: 380px;
+  max-width: 90%;
+  padding: 2rem 2.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.login-register:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(43, 58, 40, 0.15);
+}
+
+/* ===== User Control (Bottom Toggle) ===== */
+.user-control {
+  margin-top: 1.2rem;
+  color: #2b3a28;
+  font-size: 0.95rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.user-control p {
+  color: #2b3a28;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.user-control p:hover {
+  color: #3e5c3b;
+  text-decoration: underline;
+  transform: scale(1.03);
+}
+
+/* ===== Mobile Responsiveness ===== */
+@media (max-width: 480px) {
+  .login-register {
+    width: 90%;
+    padding: 1.5rem;
+  }
+
+  .app-name {
+    font-size: 1.3rem;
+  }
+
+  .icon {
+    width: 60px;
+    height: 60px;
+  }
+}

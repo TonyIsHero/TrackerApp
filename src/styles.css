@@ -11,3 +11,6 @@
   font-family: 'Poppins', 'Segoe UI', sans-serif;
   box-sizing: border-box;
 }
+body{
+  overflow-y: hidden;
+}

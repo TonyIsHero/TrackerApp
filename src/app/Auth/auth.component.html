@@ -1,0 +1,12 @@
+<div class="main-container">
+    <div class="title-section">
+ <img src="images/macromate-icon.png" class="icon" alt="MacroMate Logo">
+    <p class="app-name">Welcome to <span>MacroMate</span></p>
+    </div>
+    <div class="login-register">
+        <router-outlet></router-outlet>
+    </div>
+    <div class="user-control">
+        <p (click)=toggle()>{{this.bottomMessage}}</p>
+    </div>
+</div>
