@@ -2,20 +2,35 @@
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="registerForm">
             <div class="form-row">
                 <div class="form-field">
-                        <label for="username">Username</label>
-                        <input id="username" type="text" formControlName="username" required/>
+                        <label for="name">Name</label>
+                        <input id="name" type="text" formControlName="name" required/>
+                        <div class="error-message" *ngIf="getFieldError('name')">
+                            {{ getFieldError('name') }}
+                        </div>
                     </div>
                     <div class="form-field">
                         <label for="email">Email</label>
                         <input id="email" type="email" formControlName="email" required/>
+                        <div class="error-message" *ngIf="getFieldError('email')">
+                            {{ getFieldError('email') }}
+                        </div>
                     </div>
                 <div class="form-field">
                     <label for="password">Password</label>
                     <input id="password" formControlName="password" type="password" required />
+                    <div class="error-message" *ngIf="getFieldError('password')">
+                        {{ getFieldError('password') }}
+                    </div>
                 </div>    
                 <div class="form-field">
-                    <label for="password">Confirm Password</label>
-                    <input id="password" formControlName="password" type="password" required />
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input id="confirmPassword" formControlName="confirmPassword" type="password" required />
+                    <div class="error-message" *ngIf="getFieldError('confirmPassword')">
+                        {{ getFieldError('confirmPassword') }}
+                    </div>
+                    <div class="error-message" *ngIf="!passwordsMatch && userForm.get('confirmPassword')?.touched">
+                        Passwords do not match
+                    </div>
                 </div> 
             </div>
             <div class="form-actions">

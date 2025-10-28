@@ -8,9 +8,10 @@ import { Router } from '@angular/router';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
+
 export class AuthComponent {
 
-  bottomMessage='Already an user, proceed here to login';
+  bottomMessage='New User, click here to register';
   newUser : true | false = false; // user is registered
   activeSection: 'login'|'register'='login'; //active section is login
   constructor(private router:Router){}

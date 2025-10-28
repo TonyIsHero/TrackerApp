@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Form, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   imports: [CommonModule, ReactiveFormsModule],
@@ -9,7 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class LoginComponent {
   
-  constructor(private fb:FormBuilder){}
+  constructor(private fb:FormBuilder, private authService:AuthService, private router:Router){}
   loginForm!: FormGroup;
   
   ngOnInit(): void{
@@ -17,6 +19,17 @@ export class LoginComponent {
   }
 
   onSubmit(){
-    alert('Logged In Successfully');
+    if(this.loginForm.valid){
+      this.authService.login(this.loginForm.value).subscribe({
+        next:(res)=>{
+          alert(res.message);
+          this.loginForm.reset();
+          this.router.navigate(['dashboard']);
+        },
+        error:(err)=>{
+          alert(err.error.message);
+        }
+      });
+    }
   }
 }
