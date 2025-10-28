@@ -1,5 +1,5 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit,Inject, PLATFORM_ID} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { AgChartsModule } from 'ag-charts-angular';
 import { AgChartOptions, AgCharts} from 'ag-charts-enterprise';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -51,13 +51,11 @@ import { SharedserviceService } from '../../Shared/services/sharedservice.servic
       }
     });
     this.checkMealAdded();
-    if(isPlatformBrowser(this.platformId)){
-      this.updateClock();
-      this.timeInterval = setInterval(() => this.updateClock(), 1000);
-    }
+    this.updateClock();
+    this.timeInterval = setInterval(() => this.updateClock(), 1000);
   }
 
-  constructor(private fb: FormBuilder, @Inject(PLATFORM_ID) private platformId: Object, private sharedService: SharedserviceService ){}
+  constructor(private fb: FormBuilder, private sharedService: SharedserviceService ){}
 
   updateClock() {
     const now = new Date();

@@ -52,3 +52,18 @@ button[type="submit"]:disabled{
     background-color: #a5ad9c;
   cursor: not-allowed;
 }
+
+.error-message {
+  color: #e74c3c;
+  font-size: 0.875rem;
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.form-field input.ng-invalid.ng-touched {
+  border-color: #e74c3c;
+}
+
+.form-field input.ng-valid.ng-touched {
+  border-color: #27ae60;
+}
