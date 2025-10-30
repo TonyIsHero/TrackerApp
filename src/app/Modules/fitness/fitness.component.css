@@ -167,10 +167,124 @@ button[type="submit"]:disabled{
   display: flex;
   flex-direction: column;
   color: #2b3a28;
+  margin-top: 2rem;
 }
 .macro-details{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   margin-top: 1rem;
+}
+/* Meals Section Styles */
+
+.meals-today-header {
+  color: var(--olive-dark);
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+/* Cards Container */
+.meals-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+/* Individual Meal Card */
+.meal-card {
+  background-color: var(--off-white);
+  border: 2px solid var(--olive-dark);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.meal-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Header */
+.meal-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--olive-dark);
+}
+
+.meal-name {
+  color: var(--olive-dark);
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.meal-calories {
+  background-color: var(--olive-dark);
+  color: var(--off-white);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Card Body */
+.meal-card-body {
+  margin-top: 1rem;
+}
+
+.nutrition-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.nutrition-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: rgba(90, 107, 69, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(90, 107, 69, 0.2);
+}
+
+.nutrition-label {
+  color: var(--olive-dark);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.nutrition-value {
+  color: var(--olive-dark);
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .meals-cards-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .meal-card {
+    padding: 1rem;
+  }
+  
+  .meal-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .nutrition-grid {
+    grid-template-columns: 1fr;
+  }
 }

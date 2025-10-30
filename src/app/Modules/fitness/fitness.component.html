@@ -18,12 +18,12 @@
         </div>
         <div class="macros-section"> 
             <div class="nutrients">
-                <div *ngFor="let item of macrosData" class="macro-name">
+                <div *ngFor="let item of dailyOverview" class="macro-name">
                     <div class="macro-name">{{item.name}}</div>
                 </div>
             </div>
             <div class="nutrient-value">
-                <div *ngFor="let item of macrosData" class="macro-value">
+                <div *ngFor="let item of dailyOverview" class="macro-value">
                     <div class="macro-name">{{item.value}}g</div>
                 </div>
             </div>
@@ -98,17 +98,33 @@
     </div>
     <div *ngIf="anyMealAdded" class="meals-section">
         <div class="meals-today-header"> 
-            Your Macros for Today
+            Your Meals for Today
         </div>
-        <div class="macro-details">
-            <div class="macro-name">
-                <div *ngFor="let item of macrosData" class="macro-name">
-                    <div class="macro-name">{{item.name}}</div>
+        <div class="meals-cards-container">
+            <div *ngFor="let meal of mealResponse" class="meal-card">
+                <div class="meal-card-header">
+                    <h4 class="meal-name">{{ meal.meal_name }}</h4>
+                    <span class="meal-calories">{{ meal.calories }} kcal</span>
                 </div>
-            </div>
-            <div class="macro-value">
-                <div *ngFor="let item of macrosData" class="macro-value">
-                    <div class="macro-name">{{item.value}}g</div>
+                <div class="meal-card-body">
+                    <div class="nutrition-grid">
+                        <div class="nutrition-item">
+                            <span class="nutrition-label">Carbs</span>
+                            <span class="nutrition-value">{{ meal.carbs }}g</span>
+                        </div>
+                        <div class="nutrition-item">
+                            <span class="nutrition-label">Proteins</span>
+                            <span class="nutrition-value">{{ meal.proteins }}g</span>
+                        </div>
+                        <div class="nutrition-item">
+                            <span class="nutrition-label">Fats</span>
+                            <span class="nutrition-value">{{ meal.fats }}g</span>
+                        </div>
+                        <div class="nutrition-item">
+                            <span class="nutrition-label">Fibre</span>
+                            <span class="nutrition-value">{{ meal.fibre }}g</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

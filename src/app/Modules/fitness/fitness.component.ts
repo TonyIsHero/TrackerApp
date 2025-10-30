@@ -7,6 +7,8 @@ import  HighchartsChartModule, { HighchartsChartComponent }  from 'highcharts-an
 import Highcharts from 'highcharts';
 import { text } from 'stream/consumers';
 import { SharedserviceService } from '../../Shared/services/sharedservice.service';
+import { DailySummaryModel, MealModel, MealResponseModel } from '../../Models/meal.model';
+import { FitnessService } from '../../services/fitness/fitness.service';
 
 @Component({
   selector: 'app-fitness',
@@ -22,40 +24,33 @@ import { SharedserviceService } from '../../Shared/services/sharedservice.servic
   Highcharts: typeof Highcharts = Highcharts;
   greetingMessage='';
   messageLine='';
-  username='Sabarno';
+  username=sessionStorage.getItem('Name') || 'User';
+  userId = sessionStorage.getItem('userId') ? +sessionStorage.getItem('userId')! : null;
   mealForm!: FormGroup;
   anyMealAdded: boolean = false;
   aiMode:boolean = false;
   currentTime='';
   private timeInterval:any;
-  macrosData : { name: string; value: number }[] = []
+  dailyOverview : { name: string; value: number }[] = []
   totalCalories: number = 0;
+  todayDate: string =''; // YYYY-MM-DD formatS
+  mealResponse: MealResponseModel[] = [];
 
   ngOnInit(): void {
-
     this.mealForm = this.fb.group({mealname:[null],carbs:[null], proteins:[null], fats:[null], fibre:[null], calories:[null]});
+    // Get local date in Indian timezone (IST) - will show October 30th correctly
+    this.todayDate = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD format in local timezone
+    console.log('Today Date (Local IST):', this.todayDate);
+    this.fetchDailySummary();
+    this.fetchMealsForDay();
     this.checkTimeBasedGreeting();
-
-    //mealdata from shared service
-    this.sharedService.mealData$.subscribe(data => {
-      if(data){
-        console.log('Received meal data from Shared Service:', data);
-        this.macrosData = [
-          { name: 'Carbohydrates', value: data.carbs },
-          { name: 'Proteins', value: data.proteins },
-          { name: 'Fats', value: data.fats },];
-        this.totalCalories = data.calories;
-        console.log('Updated Macros Data:', this.macrosData);
-        this.updateChartTC();
-        this.updateChartDO();
-      }
-    });
-    this.checkMealAdded();
     this.updateClock();
     this.timeInterval = setInterval(() => this.updateClock(), 1000);
   }
 
-  constructor(private fb: FormBuilder, private sharedService: SharedserviceService ){}
+  constructor(private fb: FormBuilder, 
+    private sharedService: SharedserviceService,
+    private fitnessService: FitnessService ){}
 
   updateClock() {
     const now = new Date();
@@ -63,6 +58,41 @@ import { SharedserviceService } from '../../Shared/services/sharedservice.servic
     // console.log('Current Time:', this.currentTime);
   }
 
+  fetchMealsForDay(){
+    this.fitnessService.fetchMealsForDay(this.todayDate).subscribe({
+      next:(meals)=>{
+        console.log('Meals for today:', meals);
+        if(meals && meals.length > 0) {
+          this.mealResponse = meals || [];
+        }
+      },
+      error:(err)=>{
+        alert('Error fetching meals: ' + err.message);
+        this.mealResponse = [];
+      }
+    });
+  }
+
+  fetchDailySummary(){
+    this.fitnessService.fetchDailySummary(this.todayDate).subscribe({
+      next:(summary)=>{
+        if( summary.calories) {
+          this.anyMealAdded = true;
+          console.log(this.anyMealAdded);
+          console.log('Daily Summary for today:', summary);
+          this.dailyOverview = [
+            { name: 'Carbohydrates', value: summary.carbs || 0 },
+            { name: 'Proteins', value: summary.proteins || 0 },
+            { name: 'Fats', value: summary.fats || 0 }
+          ];
+        console.log('Daily Overview Data:', this.dailyOverview);
+        this.totalCalories = summary.calories || 0;
+        this.updateChartTC();
+        this.updateChartDO();
+      }
+      }
+     });
+  }
   checkTimeBasedGreeting() {
     const currentHour = new Date().getHours();
     if(currentHour < 12) {
@@ -75,10 +105,6 @@ import { SharedserviceService } from '../../Shared/services/sharedservice.servic
       this.greetingMessage = 'Good Evening '+  this.username+'!';
       this.messageLine = 'Wind down with a light dinner';
     }
-  }
-  checkMealAdded(){
-    this.anyMealAdded = this.macrosData.length > 0;
-    console.log('Any Meal Added:', this.anyMealAdded);
   }
   toggleMealInputMode(mode:'ai' | 'manual')
     {
@@ -113,7 +139,7 @@ import { SharedserviceService } from '../../Shared/services/sharedservice.servic
       {  
       type: 'pie',
       name: 'Macronutrients',
-      data: this.macrosData.map(item => ({ 
+      data: this.dailyOverview.map(item => ({
         name: item.name, 
         y: item.value,
         color: item.name === 'Carbohydrates' ? '#8da67e' :
@@ -128,6 +154,7 @@ import { SharedserviceService } from '../../Shared/services/sharedservice.servic
     credits: {enabled: false},
   };
   }
+
   updateChartTC(){
     this.chartOptionsTC={
     chart: {
@@ -140,7 +167,7 @@ import { SharedserviceService } from '../../Shared/services/sharedservice.servic
       text: `${this.totalCalories} kcal`,
       align: 'center',
       verticalAlign: 'middle',
-      style: { color: '#f8faf7', fontSize: '14px',fontWeight: 'bold' },
+      style: { color: '#5a6b45', fontSize: '14px',fontWeight: 'bold' },
     },
     plotOptions: {
       pie: {
@@ -160,27 +187,34 @@ import { SharedserviceService } from '../../Shared/services/sharedservice.servic
     credits: {enabled: false},
   };
   }
+
   onSubmitMealForm(){
     if(this.mealForm.valid){
-      const mealData = this.mealForm.value;
-      console.log('Meal Data Submitted:', mealData);
-      this.macrosData = [
-        { name: 'Carbohydrates', value: mealData.carbs },
-        { name: 'Proteins', value: mealData.proteins },
-        { name: 'Fats', value: mealData.fats },];
-      this.totalCalories = mealData.calories;
-      
-      this.sharedService.updateMealData(mealData);
-      
-      this.updateChartTC();
-      this.updateChartDO();
-      // Further processing can be done here  
-      this.mealForm.reset();
-      this.checkMealAdded();
+      const meal : MealModel={
+        userId: this.userId!,
+        meal_name: this.mealForm.value.mealname,
+        carbs: this.mealForm.value.carbs,
+        proteins: this.mealForm.value.proteins,
+        fats: this.mealForm.value.fats,
+        fibre: this.mealForm.value.fibre,
+        calories: this.mealForm.value.calories, 
+      }
+
+      this.fitnessService.addMeal(meal).subscribe({
+        next:(res)=>{
+          alert(res.message);
+          // ✅ Refresh data AFTER meal is successfully saved
+          this.fetchDailySummary();
+          this.fetchMealsForDay(); 
+          this.mealForm.reset();
+        },
+        error:(err)=>{
+          alert(err.error.message);
+        }
+      });
     } else {
       alert('Please fill out the form correctly before submitting.');
       this.mealForm.markAllAsTouched();
    }
   }
-  
 }

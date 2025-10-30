@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { Observable, tap } from 'rxjs';
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,8 @@ export class AuthService {
       tap((response:any) => {
         if(response.token){
           sessionStorage.setItem('token', response.token);
+          sessionStorage.setItem('Name', response.name);
+          sessionStorage.setItem('userId', response.userId);
         }
       })
     );
@@ -26,6 +28,8 @@ export class AuthService {
       tap((response:any) => {
         if(response.token){
           sessionStorage.setItem('token', response.token);
+          sessionStorage.setItem('Name', response.name);
+          sessionStorage.setItem('userId', response.userId);
         }
       })
     );
@@ -33,6 +37,8 @@ export class AuthService {
 
   logout():void{
     sessionStorage.removeItem('token');
+    sessionStorage.removeItem('Name'); 
+    sessionStorage.removeItem('userId'); // Also remove userId
   }
   
   isLoggedIn():boolean{
@@ -41,5 +47,15 @@ export class AuthService {
 
   getToken():string | null{
     return sessionStorage.getItem('token');
+  }
+
+  // Username methods
+  getUserName(): string | null{
+    return sessionStorage.getItem('Name');
+  }
+
+  getUserId(): number | null{ 
+    const userId = sessionStorage.getItem('userId');
+    return userId ? +userId : null;
   }
 }
