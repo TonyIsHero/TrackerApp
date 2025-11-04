@@ -1,7 +1,136 @@
 <div class="top-navbar">
     <div class="home-icon">Home</div>
     <div class="right-pane">
-        <div class="drop-downs">Contact Us</div>
         <div class="logout" (click)="logout()">Logout</div>
+        <div class="profile" (mouseenter)="onProfileHover()" (mouseleave)="onProfileLeave()">
+            <img src="images/user.png" alt="Profile Icon" class="profile-icon" style="height: 40px; width: 40px;">
+            <div class="dropdown" [class.show]="showProfileDropdown">
+                <div class="dropdown-item" (click)="openEditProfile()">Your Profile</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal - positioned outside the navbar -->
+<div class="modal-overlay" [class.show]="showEditProfileModal" (click)="closeEditProfile()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3 class="modal-title">Profile Information</h3>
+            <button class="close-btn" (click)="closeEditProfile()">&times;</button>
+        </div>
+        
+        <!-- Tab Navigation -->
+        <div class="modal-tabs">
+            <button 
+                class="tab-btn" 
+                [class.active]="activeTab === 'view'"
+                (click)="switchTab('view')">
+                View Profile
+            </button>
+            <button 
+                class="tab-btn" 
+                [class.active]="activeTab === 'edit'"
+                (click)="switchTab('edit')">
+                Edit Profile
+            </button>
+        </div>
+        
+        <div class="modal-body">
+            <!-- VIEW TAB -->
+            <div *ngIf="activeTab === 'view'" class="profile-view">
+                <div class="profile-summary">
+                    <div class="user-avatar">
+                        <div class="avatar-circle">{{ userProfile.name.charAt(0) }}</div>
+                        <h2>{{ userProfile.name }}</h2>
+                    </div>
+                </div>
+                
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="info-icon">📏</div>
+                        <div class="info-content">
+                            <h4>Height</h4>
+                            <p>{{ userProfile.height }} cm</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">⚖️</div>
+                        <div class="info-content">
+                            <h4>Weight</h4>
+                            <p>{{ userProfile.weight }} kg</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">🎂</div>
+                        <div class="info-content">
+                            <h4>Age</h4>
+                            <p>{{ userProfile.age }} years</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">🔥</div>
+                        <div class="info-content">
+                            <h4>Target Calories</h4>
+                            <p>{{ userProfile.goalCalories }} cal</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="view-actions">
+                    <button class="btn-primary" (click)="switchTab('edit')">
+                        Edit Profile
+                    </button>
+                </div>
+            </div>
+            
+            <!-- EDIT TAB -->
+            <div *ngIf="activeTab === 'edit'" class="profile-edit">
+                <form [formGroup]="profileForm" (ngSubmit)="onSubmitProfileForm()" class="profile-form">
+                    <div class="form-row">
+                        <div class="form-field full-width">
+                            <label for="dateOfBirth">Date of Birth</label>
+                            <input 
+                                id="dateOfBirth" 
+                                formControlName="dateOfBirth" 
+                                type="date" 
+                                required 
+                                max="{{ getCurrentDate() }}"
+                                class="date-input"
+                            />
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="height">Height (cm)</label>
+                            <input id="height" formControlName="height" type="number" required />
+                        </div>
+                        <div class="form-field">
+                            <label for="weight">Weight (kg)</label>
+                            <input id="weight" formControlName="weight" type="number" required />
+                        </div>
+                        <div class="form-field">
+                            <label for="calories">Target Calories</label>
+                            <input id="calories" formControlName="goalCalories" type="number" required />
+                        </div>
+                        <div class="form-field">
+                            <label for="targetWeight">Target Weight</label>
+                            <input id="targetWeight" formControlName="goalWeight" type="number" required />
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" (click)="switchTab('view')">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn-primary" [disabled]="profileForm.invalid">
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>

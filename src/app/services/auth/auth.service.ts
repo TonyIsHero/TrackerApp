@@ -58,4 +58,10 @@ export class AuthService {
     const userId = sessionStorage.getItem('userId');
     return userId ? +userId : null;
   }
+
+  //  default username and password for testing
+  //  {
+  //     "email": "sabarno@example.com",
+  //      "password": "mypassword123"
+  // }
 }
